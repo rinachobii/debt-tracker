@@ -474,7 +474,7 @@ function renderMonths(){
       saveState();saveBtn.textContent='✓ đã lưu';saveBtn.className='btn btn-green';
       ts.textContent='lưu lúc '+state[m.id].savedAt;
       setTimeout(()=>{saveBtn.textContent='lưu';saveBtn.className='btn btn-cyan';},2000);
-      updateSummary();renderMonths();
+      updateSummary();renderMonths();autoSync();
     });
     saveRow.appendChild(ts);saveRow.appendChild(saveBtn);body.appendChild(saveRow);
     block.appendChild(hdr);block.appendChild(body);list.appendChild(block);
@@ -507,6 +507,34 @@ function saveFeInfo(){
 }
 
 loadState();renderMonths();updateSummary();loadFeChecks();loadFeInfo();
+// ── auto sync to google sheets (silent) ─────────────────────
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbypq8rk5TIWilA64nmm-Uh8cU5P_5BUWkIXUQx7MdJf9g_MR3J1J_6Z3v0p-V17oXDZ/exec';
+function buildPayload(){
+  return {
+    action:'write',
+    data:MONTHS.map(m=>{
+      const d=state[m.id];
+      return {
+        month:m.label,
+        tech:n(d.tech), tech_date:d.tech_date||'',
+        cake:n(d.cake), cake_date:d.cake_date||'',
+        fe:n(d.fe),     fe_date:d.fe_date||'',
+        mc:n(d.mc),     mc_date:d.mc_date||'',
+        total:n(d.tech)+n(d.cake)+n(d.fe)+n(d.mc),
+        proofs:(d.proofs||[]).map(p=>p.name).join(', '),
+        note:d.note||'', savedAt:d.savedAt||''
+      };
+    }),
+    summary:{
+      totalPaid:totalPaid(),
+      totalRemain:Math.max(0,TOTAL-totalPaid()),
+      pct:Math.min(100,Math.round(totalPaid()/TOTAL*100))
+    }
+  };
+}
+function autoSync(){
+  fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(buildPayload())}).catch(()=>{});
+}
 
 // ── spotlight glow on hover ──────────────────────────────────
 function initGlow(){
