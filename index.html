@@ -639,13 +639,11 @@ async function pullFromSheets(){
       json.data.forEach((row,i)=>{
         const m=MONTHS[i];if(!m)return;
         const d=state[m.id];
-        if(row.total>0){
-          d.tech=row.tech||'';d.tech_date=row.tech_date||'';
-          d.cake=row.cake||'';d.cake_date=row.cake_date||'';
-          d.fe=row.fe||'';d.fe_date=row.fe_date||'';
-          d.mc=row.mc||'';d.mc_date=row.mc_date||'';
-          d.note=row.note||'';d.savedAt=row.savedAt||'';d.savedBy=row.savedBy||'';
-        }
+        d.tech=row.tech||'';d.tech_date=row.tech_date||'';
+        d.cake=row.cake||'';d.cake_date=row.cake_date||'';
+        d.fe=row.fe||'';d.fe_date=row.fe_date||'';
+        d.mc=row.mc||'';d.mc_date=row.mc_date||'';
+        d.note=row.note||'';d.savedAt=row.savedAt||'';d.savedBy=row.savedBy||'';
       });
       saveState();renderMonths();updateSummary();
     }
