@@ -575,7 +575,7 @@ function saveFeInfo(){
 }
 
 // ── auth ─────────────────────────────────────────────────────
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOA_XzbqKxAqPWsDg3ie_dRL2M53Q5V0E5tifwRvvhHO-_OWUCnscLHo_SdD_McAhp/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzRsaoNDGXB1OYi83ODgaGk05ggcc_ye30OClC_uBjkp-vE5uU0NgENPENsLJlaep1o/exec';
 let currentUser=null,currentPass=null,currentDisplayName=null;
 
 function getSession(){
@@ -630,7 +630,10 @@ function doLogout(){
 async function pullFromSheets(){
   if(!currentUser)return;
   try{
-    const res=await fetch(`${SCRIPT_URL}?action=read&user=${encodeURIComponent(currentUser)}&pass=${encodeURIComponent(currentPass)}`);
+    const res=await fetch(SCRIPT_URL,{
+      method:'POST',
+      body:JSON.stringify({action:'read',user:currentUser,pass:currentPass})
+    });
     const json=await res.json();
     if(json.status==='ok'&&json.data&&json.data.length){
       json.data.forEach((row,i)=>{
