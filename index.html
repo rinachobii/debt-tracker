@@ -639,23 +639,28 @@ async function pullFromSheets(){
       json.data.forEach((row,i)=>{
         const m=MONTHS[i];if(!m)return;
         const d=state[m.id];
-        d.tech=row.tech||'';d.tech_date=row.tech_date||'';
-        d.cake=row.cake||'';d.cake_date=row.cake_date||'';
-        d.fe=row.fe||'';d.fe_date=row.fe_date||'';
-        d.mc=row.mc||'';d.mc_date=row.mc_date||'';
+        d.tech=String(row.tech||'');d.tech_date=row.tech_date||'';
+        d.cake=String(row.cake||'');d.cake_date=row.cake_date||'';
+        d.fe=String(row.fe||'');d.fe_date=row.fe_date||'';
+        d.mc=String(row.mc||'');d.mc_date=row.mc_date||'';
         d.note=row.note||'';d.savedAt=row.savedAt||'';d.savedBy=row.savedBy||'';
+        if(!d.proofs)d.proofs=[];
       });
-      saveState();renderMonths();updateSummary();
+      saveState();
     }
-  }catch(e){}
+  }catch(e){
+    console.error('pullFromSheets error:',e);
+  }
 }
 
-function showApp(){
+async function showApp(){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('mainApp').style.display='block';
   document.getElementById('userDisplayName').textContent=currentDisplayName;
-  loadState();renderMonths();updateSummary();loadFeChecks();loadFeInfo();
-  pullFromSheets();
+  loadState();
+  // kéo data từ Sheets trước, sau đó mới render
+  await pullFromSheets();
+  renderMonths();updateSummary();loadFeChecks();loadFeInfo();
 }
 
 function buildPayload(){
