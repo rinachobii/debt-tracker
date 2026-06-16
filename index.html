@@ -848,7 +848,7 @@ function updateHousehold(){
 }
 
 // ── auth ─────────────────────────────────────────────────────
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSV5UF6pJpBfVTZqcSFaVSU91u2d5qXWsKMNZ9Hyz3EZlOIIoE7dQKrCiHgYsRMrvb/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyysBpv-8VvYfNNPCOyv6BSmWGcxedGHdt2P5wzytnkCXEmtuYtpwz8i38_isBzSiJn/exec';
 let currentUser=null,currentPass=null,currentDisplayName=null;
 
 function getSession(){
@@ -931,6 +931,18 @@ async function pullFromSheets(){
         if(!d.proofs)d.proofs=[];
       });
       saveState();
+      // restore UOB data
+      if(json.uob && json.uob.length){
+        json.uob.forEach((row,i)=>{
+          const m=UOB_MONTHS[i];if(!m)return;
+          if(!uobState[m.id])uobState[m.id]={amount:'',date:'',note:'',savedAt:''};
+          uobState[m.id].amount = row.amount>0 ? String(row.amount) : '';
+          uobState[m.id].date   = row.date||'';
+          uobState[m.id].note   = row.note||'';
+          uobState[m.id].savedAt= row.savedAt||'';
+        });
+        saveUobState();
+      }
     }
   }catch(e){
     console.error('pullFromSheets error:',e);
@@ -963,6 +975,16 @@ function buildPayload(){
         total:n(d.tech)+n(d.cake)+n(d.fe)+n(d.mc)+n(d.divy),
         proofs:(d.proofs||[]).map(p=>p.name).join(', '),
         note:d.note||'',savedAt:d.savedAt||'',savedBy:currentDisplayName||''
+      };
+    }),
+    uob: UOB_MONTHS.map(m=>{
+      const d=uobState[m.id]||{};
+      return {
+        month: m.label,
+        amount: n(d.amount)||0,
+        date: d.date||'',
+        note: d.note||'',
+        savedAt: d.savedAt||''
       };
     }),
     summary:{totalPaid:totalPaid(),totalRemain:Math.max(0,TOTAL-totalPaid()),pct:Math.min(100,Math.round(totalPaid()/TOTAL*100))}
