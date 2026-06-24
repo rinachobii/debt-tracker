@@ -374,7 +374,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 </head>
 <body>
 <!-- LOGIN SCREEN -->
-<div id="loginScreen">
+<div id="loginScreen" style="display:none">
   <div class="login-box">
     <div class="login-logo">🐻🐼</div>
     <div class="login-title">Dudu tổng tiến công</div>
@@ -655,12 +655,12 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <div>
         <div class="sv-target">Mục tiêu savings</div>
         <div class="sv-big" id="svDuduTotal" style="color:var(--cyan)">0đ</div>
-        <div class="sv-sub">2.000.000đ / tháng · T7–T11</div>
+        <div class="sv-sub">2.000.000đ / tháng · bắt đầu từ T12</div>
       </div>
       <div style="text-align:right">
         <div class="sv-target">Target cuối năm</div>
-        <div style="font-family:'Geist Mono',monospace;font-size:20px;font-weight:400;color:var(--cyan)">10.000.000đ</div>
-        <div class="sv-sub">5 tháng × 2tr</div>
+        <div style="font-family:'Geist Mono',monospace;font-size:20px;font-weight:400;color:var(--cyan)">2.000.000đ</div>
+        <div class="sv-sub">bắt đầu T12 sau khi xong nợ</div>
       </div>
     </div>
     <div class="sv-bar-bg"><div class="sv-bar-fill" id="svDuduBar" style="width:0%;background:var(--cyan);box-shadow:0 0 12px rgba(204,204,255,.5)"></div></div>
@@ -690,12 +690,27 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 const INIT={tech:4482709,cake:5886182,fe:12918373,mc:16411000,divy:11280000,momo:5400000,zalo:2800000};
 const TOTAL=59278264;
 const MONTHS=[
-  {id:'m6', label:'Tháng 06 / 2026',sub:'nửa cuối · ~5–6tr dư',active:true,plan:{tech:1197709,cake:562000,fe:1435373,mc:1300000,divy:1880000,momo:0,zalo:0}},
-  {id:'m7', label:'Tháng 07 / 2026',sub:'xóa Tech + PayLater · tối thiểu mọi khoản',plan:{tech:3285000,cake:1422173,fe:1435373,mc:1300000,divy:1880000,momo:5400000,zalo:2800000}},
-  {id:'m8', label:'Tháng 08 / 2026',sub:'dồn Mcredit + trả bớt FE',plan:{tech:0,cake:1422173,fe:5000000,mc:3577454,divy:1880000,momo:0,zalo:0}},
-  {id:'m9', label:'Tháng 09 / 2026',sub:'tất toán FE 🔥 + dồn Mcredit',plan:{tech:0,cake:1422173,fe:4542264,mc:3155563,divy:1880000,momo:0,zalo:0}},
-  {id:'m10',label:'Tháng 10 / 2026',sub:'xóa Mcredit 💥',plan:{tech:0,cake:1422173,fe:0,mc:8697437,divy:1880000,momo:0,zalo:0}},
-  {id:'m11',label:'Tháng 11 / 2026',sub:'xong dì Vy 🎉 · chỉ còn Cake tự góp',plan:{tech:0,cake:1422173,fe:0,mc:0,divy:1880000,momo:0,zalo:0}},
+  {id:'m6', label:'Tháng 06 / 2026',sub:'nửa cuối · ~5–6tr dư',active:true,
+   plan:{tech:1197709,cake:562000,fe:1435373,mc:1300000,divy:1880000,momo:270000,zalo:140000},
+   note:'Dudu→Bubu: 11.770.500đ · UOB 15% · mượn GĐ 3M · mẹ Bubu trả nhà+nước'},
+  {id:'m7', label:'Tháng 07 / 2026',sub:'xóa Tech + tối thiểu mọi khoản',
+   plan:{tech:3285000,cake:562000,fe:1435373,mc:1300000,divy:1880000,momo:270000,zalo:140000},
+   note:'Dudu→Bubu: 11.770.500đ · UOB 15% · mượn GĐ 3M · mẹ Bubu trả nhà+nước'},
+  {id:'m8', label:'Tháng 08 / 2026',sub:'dồn FE · hoãn Dì Vy · hoàn GĐ 3M',
+   plan:{tech:0,cake:562000,fe:3065000,mc:1300000,divy:0,momo:256500,zalo:133000},
+   note:'Dudu→Bubu: 7.183.500đ · hoàn GĐ 3M riêng · Dì Vy hoãn 1 tháng'},
+  {id:'m9', label:'Tháng 09 / 2026',sub:'bù Dì Vy T8+T9 · FE tối thiểu',
+   plan:{tech:0,cake:562000,fe:1435373,mc:1300000,divy:3760000,momo:243675,zalo:126350},
+   note:'Dudu→Bubu: 7.183.500đ · Dì Vy bù 2 tháng'},
+  {id:'m10',label:'Tháng 10 / 2026',sub:'dồn mạnh FE 🔥',
+   plan:{tech:0,cake:562000,fe:4185000,mc:1300000,divy:1880000,momo:231491,zalo:119932},
+   note:'Dudu→Bubu: 7.183.500đ'},
+  {id:'m11',label:'Tháng 11 / 2026',sub:'tất toán FE 🔥 · dư dồn Mcredit',
+   plan:{tech:0,cake:562000,fe:2797627,mc:2687373,divy:1880000,momo:219916,zalo:113935},
+   note:'Dudu→Bubu: 7.183.500đ · FE XONG'},
+  {id:'m12',label:'Tháng 12 / 2026',sub:'tất toán Cake + Mcredit + Dì Vy 🎉',
+   plan:{tech:0,cake:4300000,fe:0,mc:3714369,divy:1880000,momo:208720,zalo:108238},
+   note:'Dudu→Bubu: 7.183.500đ + Bubu HT 2.5M · XONG HẾT NỢ 🎉'},
 ];
 
 let state={};
@@ -1046,34 +1061,85 @@ function saveSavings(){
 }
 
 // ── budget tracker ───────────────────────────────────────────
-const BUDGET_MONTHS = ['m7','m8','m9','m10','m11'];
+const BUDGET_MONTHS = ['m7','m8','m9','m10','m11','m12'];
+
+// Tính dư còn lại của Dudu sau nợ + sinh hoạt mỗi tháng
+function getDuduRemaining(mid){
+  // Dudu dư = lương - nợ tháng đó - chuyển Bubu - xăng
+  const m = MONTHS.find(x=>x.id===mid);
+  if(!m) return 0;
+  const totalDebt = Object.values(m.plan).reduce((s,v)=>s+v,0);
+  const chuyenBubu = mid==='m7' ? 11770500 : 7183500;
+  const xang = 500000;
+  const bubuSupport = mid==='m12' ? 2500000 : 0;
+  return 16000000 + bubuSupport - totalDebt - chuyenBubu - xang;
+}
+
+// Tính dư còn lại của Bubu sau UOB + sinh hoạt phần Bubu + savings
+function getBubuRemaining(mid){
+  // T7 bất thường: UOB 23M vượt xa thu nhập → âm nặng
+  if(mid==='m7'){
+    // Bubu T7: lương 16.5M - UOB 23M - savings 4.5M = -11M
+    return 16500000 - 23000000 - 4500000; // -11.000.000đ
+  }
+  // T8+: Bubu budget cá nhân trong UOB = UOB 7M - chi chung - grab
+  const chungBubu = 750000+500000+2500000+333500+1000000; // 5.083.500đ
+  const grab      = 1500000;
+  const personalUOB = 7000000 - chungBubu - grab; // 416.500đ
+  return personalUOB;
+}
+
+// Chi phí cố định chung (mỗi người chịu 50%)
+const FIXED_COSTS = [
+  {id:'nha',      name:'🏠 Nhà + nước + gửi xe', total:1500000, each:750000},
+  {id:'dien',     name:'⚡ Tiền điện',            total:1000000, each:500000},
+  {id:'ansieuthi',name:'🛒 Ăn uống + siêu thị',  total:5000000, each:2500000},
+  {id:'event',    name:'🎉 Event (TB)',            total:667000,  each:333500},
+  {id:'buffer',   name:'📦 Buffer phát sinh',     total:2000000, each:1000000},
+];
+const FIXED_TOTAL_EACH = FIXED_COSTS.reduce((s,c)=>s+c.each, 0); // 5.083.500đ
 
 const BUDGET_DUDU = [
-  {id:'savings',   name:'💜 Savings',          plan:2000000},
-  {id:'quychung',  name:'🏠 Quỹ chung',         plan:1000000},
-  {id:'personal',  name:'☕ Chi tiêu cá nhân',  plan:1000000},
-];
-const BUDGET_BUBU = [
-  {id:'savings',   name:'💜 Savings',           plan:4500000},
-  {id:'quychung',  name:'🏠 Quỹ chung',          plan:1000000},
-  {id:'food',      name:'🍜 Ăn uống cá nhân',   plan:1200000},
-  {id:'shopping',  name:'🛍️ Mua sắm',            plan:1000000},
-  {id:'entertain', name:'🎮 Giải trí',            plan:800000},
-  {id:'transport', name:'🚗 Di chuyển',           plan:600000},
-  {id:'beauty',    name:'💄 Làm đẹp',            plan:1000000},
-  {id:'buffer',    name:'📦 Buffer phát sinh',   plan:900000},
+  // Chi phí cố định (Dudu góp 50%)
+  {id:'nha',       name:'🏠 Nhà + nước + gửi xe', plan:750000,   fixed:true, note:'50% · tổng 1.500.000đ'},
+  {id:'dien',      name:'⚡ Tiền điện',            plan:500000,   fixed:true, note:'50% · tổng 1.000.000đ'},
+  {id:'ansieuthi', name:'🛒 Ăn uống + siêu thị',  plan:2500000,  fixed:true, note:'50% · tổng 5.000.000đ'},
+  {id:'event',     name:'🎉 Event (TB)',            plan:333500,   fixed:true, note:'50% · tổng ~667.000đ'},
+  {id:'buffer',    name:'📦 Buffer phát sinh',     plan:1000000,  fixed:true, note:'50% · tổng 2.000.000đ'},
+  // UOB góp
+  {id:'uob',       name:'💳 Góp UOB Bubu (30%)',   plan:2100000,  fixed:true, note:'30% × ~7.000.000đ từ T8'},
+  // Cá nhân
+  {id:'xang',      name:'⛽ Xăng xe',              plan:500000,   fixed:false, note:'~10 lần × 50.000đ'},
+  {id:'savings',   name:'💜 Savings',              plan:0,        fixed:false, note:'bắt đầu từ T12'},
+  {id:'personal',  name:'☕ Chi tiêu cá nhân',     plan:0,        fixed:false, note:'phần còn lại sau nợ'},
 ];
 
-const BUDGET_TOTAL_DUDU = 4000000;  // non-debt spending
-const BUDGET_TOTAL_BUBU = 11000000; // full UOB budget + savings + quychung
+const BUDGET_BUBU = [
+  // Chi phí cố định (Bubu góp 50%)
+  {id:'nha',       name:'🏠 Nhà + nước + gửi xe', plan:750000,   fixed:true, note:'50% · tổng 1.500.000đ'},
+  {id:'dien',      name:'⚡ Tiền điện',            plan:500000,   fixed:true, note:'50% · tổng 1.000.000đ'},
+  {id:'ansieuthi', name:'🛒 Ăn uống + siêu thị',  plan:2500000,  fixed:true, note:'50% · tổng 5.000.000đ'},
+  {id:'event',     name:'🎉 Event (TB)',            plan:333500,   fixed:true, note:'50% · tổng ~667.000đ'},
+  {id:'buffer',    name:'📦 Buffer phát sinh',     plan:1000000,  fixed:true, note:'50% · tổng 2.000.000đ'},
+  // Cá nhân Bubu
+  {id:'grab',      name:'🚗 Grab',                 plan:1500000,  fixed:false, note:'60k/ngày × 25 ngày'},
+  {id:'savings',   name:'💜 Savings',              plan:4500000,  fixed:false, note:'chuyển ngay khi nhận lương'},
+  {id:'shopping',  name:'🛍️ Mua sắm',             plan:1000000,  fixed:false, note:''},
+  {id:'entertain', name:'🎮 Giải trí',             plan:800000,   fixed:false, note:'game, sub, TikTok...'},
+  {id:'beauty',    name:'💄 Làm đẹp',             plan:1000000,  fixed:false, note:'skincare · hair · makeup · nails · spa...'},
+  {id:'personal',  name:'☕ Chi tiêu cá nhân',     plan:0,        fixed:false, note:'phần còn lại'},
+];
+
+const BUDGET_TOTAL_DUDU = 16000000;
+const BUDGET_TOTAL_BUBU = 16500000;
 
 let budgetState = {};
 function loadBudgetState(){
   try{ budgetState=JSON.parse(localStorage.getItem('budgetTracker2026')||'{}'); }catch(e){ budgetState={}; }
   BUDGET_MONTHS.forEach(mid=>{
     if(!budgetState[mid]) budgetState[mid]={dudu:{},bubu:{}};
-    BUDGET_DUDU.forEach(c=>{ if(!budgetState[mid].dudu[c.id]) budgetState[mid].dudu[c.id]=''; });
-    BUDGET_BUBU.forEach(c=>{ if(!budgetState[mid].bubu[c.id]) budgetState[mid].bubu[c.id]=''; });
+    BUDGET_DUDU.forEach(c=>{ if(!(c.id in budgetState[mid].dudu)) budgetState[mid].dudu[c.id]=''; });
+    BUDGET_BUBU.forEach(c=>{ if(!(c.id in budgetState[mid].bubu)) budgetState[mid].bubu[c.id]=''; });
   });
 }
 function saveBudgetState(){ try{ localStorage.setItem('budgetTracker2026',JSON.stringify(budgetState)); }catch(e){} }
@@ -1088,12 +1154,27 @@ function renderBudget(){
     if(!mObj)return;
     const bd=budgetState[mid];
 
-    const card=document.createElement('div'); card.className='budget-card';
+    // Dynamic remaining this month
+    const duduRemain = getDuduRemaining(mid);
+    const bubuRemain = getBubuRemaining(mid);
 
-    // calc totals
     const duduActual=BUDGET_DUDU.reduce((s,c)=>s+n(bd.dudu[c.id]),0);
     const bubuActual=BUDGET_BUBU.reduce((s,c)=>s+n(bd.bubu[c.id]),0);
     const hasData=duduActual>0||bubuActual>0;
+
+    // Debt summary for this month
+    const plan=mObj.plan;
+    const debtItems=[];
+    if(plan.tech>0) debtItems.push('Tech '+fmt(plan.tech));
+    if(plan.cake>0) debtItems.push('Cake '+fmt(plan.cake));
+    if(plan.fe>0)   debtItems.push('FE '+fmt(plan.fe));
+    if(plan.mc>0)   debtItems.push('MC '+fmt(plan.mc));
+    if(plan.divy>0) debtItems.push('Dì Vy '+fmt(plan.divy));
+    if(plan.momo>0) debtItems.push('MoMo '+fmt(plan.momo));
+    if(plan.zalo>0) debtItems.push('Zalo '+fmt(plan.zalo));
+    const totalDebt=Object.values(plan).reduce((s,v)=>s+v,0);
+
+    const card=document.createElement('div'); card.className='budget-card';
 
     const hdr=document.createElement('div'); hdr.className='budget-header';
     hdr.innerHTML=`
@@ -1104,17 +1185,46 @@ function renderBudget(){
           <div class="mh-sub">${hasData?'Dudu '+fmt(duduActual)+' · Bubu '+fmt(bubuActual):'chưa nhập'}</div>
         </div>
       </div>
+      <div style="text-align:right">
+        <div style="font-family:'Geist Mono',monospace;font-size:11px;color:${duduRemain<0?'var(--coral)':'var(--text3)'}">
+          Dudu còn: <strong style="color:${duduRemain<0?'var(--coral)':'var(--cyan)'}">${fmt(Math.abs(duduRemain))}${duduRemain<0?' 🔴':' ✅'}</strong>
+        </div>
+                        <div style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--text3)">
+          Bubu: <strong id="bubuRemainDisplay_${mid}"></strong>
+        </div>
+      </div>
       <span class="chevron">▾</span>`;
 
     const body=document.createElement('div'); body.className='budget-body';
 
-    // helper to build section
-    function buildSection(who, cats, totalBudget, label){
+    // Debt breakdown banner
+    if(debtItems.length>0){
+      const debtBanner=document.createElement('div');
+      debtBanner.style.cssText='background:rgba(124,106,245,.06);border:1px solid rgba(124,106,245,.15);border-radius:6px;padding:10px 14px;margin-bottom:16px;font-family:\'Geist Mono\',monospace;font-size:11px;color:var(--text2)';
+      debtBanner.innerHTML=`<div style="color:var(--coral);font-weight:600;margin-bottom:6px">💸 Nợ Dudu tháng này: ${fmt(totalDebt)}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">${debtItems.map(d=>`<span style="background:rgba(255,102,153,.1);border:1px solid rgba(255,102,153,.2);border-radius:4px;padding:2px 8px">${d}</span>`).join('')}</div>
+        <div style="margin-top:8px;color:var(--text3)">Dudu→Bubu: <strong style="color:var(--cyan)">${mid==='m7'?fmt(11770500):fmt(7183500)}</strong>${mid==='m12'?' + Bubu HT 2.5M':''}</div>`;
+      body.appendChild(debtBanner);
+    }
+
+    function buildSection(who, cats, totalIncome, remainAfterDebt, label){
       const sec=document.createElement('div');
       sec.style.marginBottom='20px';
-      sec.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <span class="budget-who ${who}">${label}</span>
-        <span style="font-family:'Geist Mono',monospace;font-size:10px;color:var(--text3)">ngân sách: ${fmt(totalBudget)}</span>
+      const totalPlan=cats.reduce((s,c)=>s+c.plan,0);
+
+      // Show remaining after fixed costs
+      const remainColor = remainAfterDebt < 0 ? 'var(--coral)' : remainAfterDebt < 1000000 ? 'var(--amber)' : 'var(--green)';
+      const isbubu = who==='bubu';
+      const remainLabel = remainAfterDebt < 0
+        ? `⚠️ Thiếu ${fmt(Math.abs(remainAfterDebt))}`
+        : isbubu ? `✅ UOB cá nhân: ${fmt(remainAfterDebt)}` : `✅ Dư cá nhân: ${fmt(remainAfterDebt)}`;
+
+      sec.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="budget-who ${who}">${label}</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:10px;color:var(--text3)">thu nhập: ${fmt(totalIncome)}</span>
+        </div>
+        <span style="font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;color:${remainColor}">${remainLabel}</span>
       </div>
       <div class="budget-row budget-row-header">
         <span>Hạng mục</span><span>Kế hoạch</span><span>Thực tế</span><span style="text-align:right">+/-</span>
@@ -1124,14 +1234,16 @@ function renderBudget(){
       cats.forEach(c=>{
         const actual=n(budgetState[mid][who][c.id]);
         actualTotal+=actual;
-        const diff=actual-c.plan;
+        const diff=actual-(c.plan||0);
         const diffTxt=actual>0?(diff>=0?'+'+fmt(diff):'-'+fmt(Math.abs(diff))):'—';
         const diffCls=actual>0?(diff>0?'over':'ok'):'';
+        const fixedBadge=c.fixed?`<span style="font-family:'Geist Mono',monospace;font-size:9px;background:rgba(124,106,245,.1);color:var(--cyan);border-radius:3px;padding:1px 5px;margin-left:4px">CỐ ĐỊNH</span>`:'';
+        const noteHtml=c.note?`<div style="font-family:'Geist Mono',monospace;font-size:9px;color:var(--text3);margin-top:2px">${c.note}</div>`:'';
 
         const row=document.createElement('div'); row.className='budget-cats';
-        row.innerHTML=`<div class="budget-row">
-          <span class="budget-cat-name">${c.name}</span>
-          <span class="budget-cat-plan">${fmt(c.plan)}</span>
+        row.innerHTML=`<div class="budget-row" style="align-items:flex-start">
+          <span class="budget-cat-name">${c.name}${fixedBadge}${noteHtml}</span>
+          <span class="budget-cat-plan">${c.plan>0?fmt(c.plan):'—'}</span>
           <input class="budget-cat-input" type="text" inputmode="numeric"
             data-who="${who}" data-cat="${c.id}" data-mid="${mid}"
             placeholder="0" value="${actual?actual.toLocaleString('vi-VN'):''}">
@@ -1140,20 +1252,18 @@ function renderBudget(){
         sec.appendChild(row);
       });
 
-      // summary bar
-      const pct=Math.min(100,Math.round(actualTotal/totalBudget*100));
-      const overBudget=actualTotal>totalBudget;
-      sec.innerHTML+=`<div class="budget-mini-bar-bg"><div class="budget-mini-bar-fill" style="width:${pct}%;background:${overBudget?'var(--coral)':'var(--cyan)'}"></div></div>
-        <div style="font-family:'Geist Mono',monospace;font-size:10px;color:${overBudget?'var(--coral)':'var(--text3)'};margin-top:4px;text-align:right">
-          ${actualTotal>0?(overBudget?'🔴 Vượt '+fmt(actualTotal-totalBudget):'✓ Còn lại '+fmt(totalBudget-actualTotal)):''}
+      const pct=totalPlan>0?Math.min(100,Math.round(actualTotal/totalPlan*100)):0;
+      const over=totalPlan>0&&actualTotal>totalPlan;
+      sec.innerHTML+=`<div class="budget-mini-bar-bg"><div class="budget-mini-bar-fill" style="width:${pct}%;background:${over?'var(--coral)':'var(--cyan)'}"></div></div>
+        <div style="font-family:'Geist Mono',monospace;font-size:10px;color:${over?'var(--coral)':'var(--text3)'};margin-top:4px;text-align:right">
+          ${actualTotal>0?(over?'🔴 Vượt '+fmt(actualTotal-totalPlan):'✓ Tổng thực tế: '+fmt(actualTotal)):''}
         </div>`;
       return sec;
     }
 
-    body.appendChild(buildSection('dudu', BUDGET_DUDU, BUDGET_TOTAL_DUDU, 'DUDU'));
-    body.appendChild(buildSection('bubu', BUDGET_BUBU, BUDGET_TOTAL_BUBU, 'BUBU'));
+    body.appendChild(buildSection('dudu', BUDGET_DUDU, 16000000, duduRemain, 'DUDU'));
+    body.appendChild(buildSection('bubu', BUDGET_BUBU, 16500000, bubuRemain, 'BUBU'));
 
-    // save row
     const saveRow=document.createElement('div'); saveRow.className='save-row';
     const saveBtn=document.createElement('button'); saveBtn.className='btn btn-cyan';
     saveBtn.textContent='lưu chi tiêu';
@@ -1161,19 +1271,17 @@ function renderBudget(){
       body.querySelectorAll('.budget-cat-input').forEach(inp=>{
         const raw=inp.value.replace(/\D/g,'');
         budgetState[inp.dataset.mid][inp.dataset.who][inp.dataset.cat]=raw;
-        // update diff
-        const cat=[...BUDGET_DUDU,...BUDGET_BUBU].find(c=>c.id===inp.dataset.cat&&[...BUDGET_DUDU,...BUDGET_BUBU].includes(c));
-        const plan=inp.dataset.who==='dudu'
-          ? (BUDGET_DUDU.find(c=>c.id===inp.dataset.cat)||{plan:0}).plan
-          : (BUDGET_BUBU.find(c=>c.id===inp.dataset.cat)||{plan:0}).plan;
+        const cats=inp.dataset.who==='dudu'?BUDGET_DUDU:BUDGET_BUBU;
+        const cat=cats.find(c=>c.id===inp.dataset.cat);
+        const plan=cat?cat.plan:0;
         const actual=parseInt(raw)||0;
         const diff=actual-plan;
         const el=document.getElementById(`diff_${inp.dataset.mid}_${inp.dataset.who}_${inp.dataset.cat}`);
-        if(el&&actual>0){ el.textContent=diff>=0?'+'+fmt(diff):'-'+fmt(Math.abs(diff)); el.className='budget-cat-diff '+(diff>0?'over':'ok'); }
+        if(el&&actual>0){el.textContent=diff>=0?'+'+fmt(diff):'-'+fmt(Math.abs(diff));el.className='budget-cat-diff '+(diff>0?'over':'ok');}
       });
       saveBudgetState();
       saveBtn.textContent='✓ đã lưu'; saveBtn.className='btn btn-green';
-      setTimeout(()=>{ saveBtn.textContent='lưu chi tiêu'; saveBtn.className='btn btn-cyan'; },2000);
+      setTimeout(()=>{saveBtn.textContent='lưu chi tiêu';saveBtn.className='btn btn-cyan';},2000);
       renderBudget();
     });
     saveRow.appendChild(saveBtn);
@@ -1181,15 +1289,27 @@ function renderBudget(){
 
     card.appendChild(hdr); card.appendChild(body); list.appendChild(card);
 
-    // toggle
+    // Set Bubu remain display
+    const bubuEl = card.querySelector('#bubuRemainDisplay_'+mid);
+    if(bubuEl){
+      if(mid==='m7'){
+        bubuEl.innerHTML = 'T7 thiếu '+fmt(Math.abs(bubuRemain))+' 🔴 (UOB bất thường)';
+        bubuEl.style.color='var(--coral)';
+      } else if(bubuRemain<0){
+        bubuEl.innerHTML = 'UOB cá nhân: -'+fmt(Math.abs(bubuRemain))+' 🔴';
+        bubuEl.style.color='var(--coral)';
+      } else {
+        bubuEl.innerHTML = 'UOB cá nhân: '+fmt(bubuRemain)+' ✅';
+        bubuEl.style.color='var(--cyan)';
+      }
+    }
+
     hdr.addEventListener('click',()=>{
       const open=body.classList.toggle('open');
       hdr.querySelector('.chevron').classList.toggle('open',open);
     });
-    // auto open current
-    if(mid==='m7'){ body.classList.add('open'); hdr.querySelector('.chevron').classList.add('open'); }
+    if(mid==='m7'){body.classList.add('open');hdr.querySelector('.chevron').classList.add('open');}
 
-    // live format inputs
     body.querySelectorAll('.budget-cat-input').forEach(inp=>{
       inp.addEventListener('input',function(){
         const raw=this.value.replace(/\D/g,'');
@@ -1209,8 +1329,9 @@ const DUDU_SV_MONTHS = [
   {id:'ds9', label:'T9', name:'Tháng 09 / 2026'},
   {id:'ds10',label:'T10',name:'Tháng 10 / 2026'},
   {id:'ds11',label:'T11',name:'Tháng 11 / 2026'},
+  {id:'ds12',label:'T12',name:'Tháng 12 / 2026'},
 ];
-const DUDU_SV_TOTAL_TARGET = 10000000;
+const DUDU_SV_TOTAL_TARGET = 2000000; // T12 start, build from there
 
 let duduSvState = {};
 function loadDuduSvState(){
@@ -1290,8 +1411,9 @@ const HH_MONTHS = [
   {id:'m9', uobId:'u9', label:'T9'},
   {id:'m10',uobId:'u10',label:'T10'},
   {id:'m11',uobId:'u11',label:'T11'},
+  {id:'m12',uobId:'u12',label:'T12'},
 ];
-let hhSelectedMonth = 'm6';
+let hhSelectedMonth = 'm7';
 
 function renderHhTabs(){
   const tabs = document.getElementById('hhTabs');
