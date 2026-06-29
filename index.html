@@ -1474,7 +1474,7 @@ function updateHousehold(){
 }
 
 // ── auth ─────────────────────────────────────────────────────
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbweAcowXgwwYFHMRiLz4Jm40L2JEbKBjd9kG-aFxyIu4Jmk8KsWW47-P7lk9AywE0lP/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwM0KC-ElmEj_dWa26Lz8uAw4TlTh07wf9AhyjGBTOXbHUg60m3qrGj6mA-obH2BKb/exec';
 let currentUser=null,currentPass=null,currentDisplayName=null;
 
 function getSession(){
@@ -1534,27 +1534,38 @@ async function pullFromSheets(){
       body:JSON.stringify({action:'read',user:currentUser,pass:currentPass})
     });
     const text=await res.text();
+    console.log('[pullFromSheets] raw response length:', text.length);
     let json;
-    try{json=JSON.parse(text);}catch(e){console.error('JSON parse error:',text);return;}
+    try{json=JSON.parse(text);}catch(e){console.error('[pullFromSheets] JSON parse error:',text.slice(0,200));return;}
+    console.log('[pullFromSheets] status:', json.status, '| data rows:', json.data?.length, '| uob rows:', json.uob?.length, '| budget rows:', json.budget?.length, '| svBubu:', json.svBubu?.length, '| svDudu:', json.svDudu?.length);
     if(json.status==='ok'&&json.data&&json.data.length){
       json.data.forEach((row,i)=>{
         const m=MONTHS[i];if(!m)return;
         const d=state[m.id];
         // số từ Sheets về dạng number, cần convert sang string cho input
+        const toDateStr = v => {
+          if(!v) return '';
+          // Already yyyy-MM-dd
+          if(/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+          // Convert JS date string to yyyy-MM-dd
+          const d = new Date(v);
+          if(isNaN(d)) return '';
+          return d.toISOString().slice(0,10);
+        };
         d.tech = row.tech>0 ? String(row.tech) : '';
-        d.tech_date = row.tech_date||'';
+        d.tech_date = toDateStr(row.tech_date);
         d.cake = row.cake>0 ? String(row.cake) : '';
-        d.cake_date = row.cake_date||'';
+        d.cake_date = toDateStr(row.cake_date);
         d.fe   = row.fe>0   ? String(row.fe)   : '';
-        d.fe_date   = row.fe_date||'';
+        d.fe_date   = toDateStr(row.fe_date);
         d.mc   = row.mc>0   ? String(row.mc)   : '';
-        d.mc_date   = row.mc_date||'';
+        d.mc_date   = toDateStr(row.mc_date);
         d.divy = row.divy>0 ? String(row.divy) : '';
-        d.divy_date = row.divy_date||'';
+        d.divy_date = toDateStr(row.divy_date);
         d.momo = row.momo>0 ? String(row.momo) : '';
-        d.momo_date = row.momo_date||'';
+        d.momo_date = toDateStr(row.momo_date);
         d.zalo = row.zalo>0 ? String(row.zalo) : '';
-        d.zalo_date = row.zalo_date||'';
+        d.zalo_date = toDateStr(row.zalo_date);
         d.note    = row.note||'';
         d.savedAt = row.savedAt||'';
         d.savedBy = row.savedBy||'';
@@ -1562,6 +1573,11 @@ async function pullFromSheets(){
       });
       saveState();
       // restore UOB
+      const toDateStr = v => {
+        if(!v) return '';
+        if(/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+        const d = new Date(v); return isNaN(d)?'':d.toISOString().slice(0,10);
+      };
       if(json.uob&&json.uob.length){
         json.uob.forEach((row,i)=>{
           const m=UOB_MONTHS[i];if(!m)return;
@@ -1672,7 +1688,12 @@ function buildPayload(){
 }
 function autoSync(){
   if(!currentUser)return;
-  fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(buildPayload())}).catch(()=>{});
+  const payload = buildPayload();
+  console.log('[autoSync] sending - debt rows:', payload.data?.length, '| uob:', payload.uob?.length, '| budget:', payload.budget?.length, '| svBubu:', payload.svBubu?.length, '| svDudu:', payload.svDudu?.length);
+  fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)})
+    .then(r=>r.json())
+    .then(j=>console.log('[autoSync] response:', j.status, j.message||''))
+    .catch(e=>console.error('[autoSync] error:', e));
 }
 
 document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
