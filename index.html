@@ -956,6 +956,7 @@ function renderUobMonths(){
       setTimeout(()=>{ this.textContent='lưu'; this.className='btn btn-fe'; },2000);
       renderUobMonths();
       renderHhTabs();updateHousehold();
+      autoSync();
     });
 
     // toggle
@@ -1057,7 +1058,7 @@ function saveSavings(){
   ts.textContent='lưu lúc '+svState.savedAt;
   btn.textContent='✓ đã lưu'; btn.style.background='rgba(0,255,136,.25)';
   setTimeout(()=>{ btn.textContent='lưu savings'; btn.style.background=''; },2000);
-  renderSavings();
+  renderSavings(); autoSync();
 }
 
 // ── budget tracker ───────────────────────────────────────────
@@ -1282,7 +1283,7 @@ function renderBudget(){
       saveBudgetState();
       saveBtn.textContent='✓ đã lưu'; saveBtn.className='btn btn-green';
       setTimeout(()=>{saveBtn.textContent='lưu chi tiêu';saveBtn.className='btn btn-cyan';},2000);
-      renderBudget();
+      renderBudget(); autoSync();
     });
     saveRow.appendChild(saveBtn);
     body.appendChild(saveRow);
@@ -1399,7 +1400,7 @@ function saveDuduSavings(){
   ts.textContent='lưu lúc '+new Date().toLocaleString('vi-VN');
   btn.textContent='✓ đã lưu';
   setTimeout(()=>btn.textContent='lưu savings',2000);
-  renderDuduSavings();
+  renderDuduSavings(); autoSync();
 }
 
 // ── household overview ───────────────────────────────────────
