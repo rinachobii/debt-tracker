@@ -1615,9 +1615,11 @@ async function showApp(){
   document.getElementById('mainApp').style.display='block';
   document.getElementById('userDisplayName').textContent=currentDisplayName;
   document.getElementById('headerStatus').textContent='ĐANG TẢI DỮ LIỆU...';
-  loadState();
+  // Load local state trước (để có initial state)
+  loadState(); loadUobState(); loadSvState(); loadDuduSvState(); loadBudgetState();
+  // Pull từ Sheets — sẽ overwrite localStorage với data mới nhất
   await pullFromSheets();
-  loadUobState(); loadSvState(); loadDuduSvState(); loadBudgetState();
+  // Render sau khi đã có data đúng
   renderMonths();updateSummary();loadFeChecks();loadFeInfo();renderUobMonths();renderBudget();renderSavings();renderDuduSavings();renderHhTabs();updateHousehold();
 }
 
